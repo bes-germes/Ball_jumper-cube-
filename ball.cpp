@@ -1,6 +1,9 @@
 #include <QPainter>
 #include <QTime>
 #include <QTextStream>
+#include <typeinfo>
+#include <string>
+
 #include "ball.h"
 
 Ball::Ball(QWidget *parent) : QWidget(parent) {
@@ -8,20 +11,20 @@ Ball::Ball(QWidget *parent) : QWidget(parent) {
     setStyleSheet("background-color:white;");
     inGame = true;
 
-
     resize(B_WIDTH, B_HEIGHT);
     loadImages();
     initGame();
 }
 
 void Ball::loadImages() {
-    spike.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\spike.png");
-    head.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\head.png");
-    field.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\field.png");
-    bad_pixel.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\dot.png");
-    block.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\apple.png");
-    white_screen.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\white_screen.png");
-    field_1.load("C:\\Users\\Oleg\\Pictures\\Saved Pictures\\field_1.png");
+    spike.load(":/pictures/spike.png");
+    head.load(":/pictures/head.png");
+    field.load(":/pictures/field.png");
+    bad_pixel.load(":/pictures/block1.png");
+    block.load(":/pictures/apple.png");
+    white_screen.load(":/pictures/white_screen.png");
+    field_1.load(":/pictures/field_1.png");
+    field_2.load(":/pictures/field_2.png");
 }
 
 
@@ -29,32 +32,26 @@ void Ball::initGame() {
     gameOverBool = 0;
     NumberOfLevel = 0;
 
-    dots = 2;
-    x = 1920;
+
+    x = 20;
     y = 500;
+
 
 
     groundPixel = 500;
     //levelOfHight[0] = 500;
-    prev_groundPixel= 500;
+    prev_groundPixel= 300;
     maxRight = 1920;
     maxLeft = 0;
     booljump = false;
+    boolDown = false;
     boolDontReapeatJump = false;
+    rightDirection = false;
+    leftDirection = false;
 
     timerId = startTimer(DELAY);
 }
 
-bool Ball::checkBoolArray(){
-    for (int i = 0; i < 114; ++i){
-        if (test[i] != true){
-            return false;
-        }else{
-
-        }
-    }
-    return true;
-}
 
 void Ball::paintEvent(QPaintEvent *e) {
 
@@ -62,6 +59,7 @@ void Ball::paintEvent(QPaintEvent *e) {
 
     doDrawing();
 }
+
 
 void Ball::doDrawing() {
 
@@ -71,91 +69,15 @@ void Ball::doDrawing() {
         case 0:
             qp.drawImage(0, 0, field);
 
-            for (int i = 0; i < 71; ++i) {
-                block_x[i] = 0 + i * 20;
-                block_y[i] = 510;
-                //levelOfHight[1] = 490;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 71; i < 74; ++i){
-                block_x[i] = 1400 + (i - 71) * 20;
-                block_y[i] = 490;
-                //levelOfHight[1] = 490;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-
-            for (int i = 74; i < 77; ++i){
-                block_x[i] = 1440 + (i - 74) * 20;
-                block_y[i] = 470;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 77; i < 80; ++i){
-                block_x[i] = 1460 + (i - 77) * 20;
-                block_y[i] = 450;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 80; i < 92; ++i){
-                block_x[i] = 1500 + (i - 80) * 20;
-                block_y[i] = 430;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 92; i < 103; ++i){
-                block_x[i] = 1700 + (i - 92) * 20;
-                block_y[i] = 410;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 103; i < 104; ++i){
-                block_x[i] = 1900 + (i - 103) * 20;
-                block_y[i] = 390;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 104; i < 107; ++i){
-                block_x[i] = 120 + (i - 104) * 20;
-                block_y[i] = 490;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 107; i < 109; ++i){
-                block_x[i] = 140 + (i - 107) * 20;
-                block_y[i] = 470;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 109; i < 112; ++i){
-                block_x[i] = 220 + (i - 109) * 20;
-                block_y[i] = 490;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 112; i < 114; ++i){
-                block_x[i] = 220 + (i - 112) * 20;
-                block_y[i] = 470;
-                //levelOfHight[2] = 470;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
-            for (int i = 0; i < 2; ++i){
-                spike_x[i] = 180 + i * 20;
-                spike_y[i] = 500;
-                qp.drawImage(spike_x[i], spike_y[i], spike);
-            }
 
         break;
 
         case 1:
             qp.drawImage(0, 0, field_1);
 
-
-            for (int i = 0; i < 114; ++i) {
-                block_x[i] = 0 + i * 20;
-                block_y[i] = 390;
-                //levelOfHight[1] = 490;
-                qp.drawImage(block_x[i], block_y[i], block);
-            }
+        break;
+        case 2:
+            qp.drawImage(0, 0, field_2);
 
         break;
     }
@@ -163,15 +85,18 @@ void Ball::doDrawing() {
     if (inGame) {
 
         qp.drawImage(x, y, head);
-
-    } else {
-        qp.drawImage(0, 0, white_screen);
-        if (NumberOfLevel == 1){
+        if (NumberOfLevel == 3){
+            qp.drawImage(0, 0, white_screen);
             finishGame(&qp, "You have won","(press escape to restart)");
+        }
+    } else {
+        if (NumberOfLevel == 3){
+            qp.drawImage(0, 0, white_screen);
+            finishGame(&qp, "You have won","Thank yoy for playing in beta test");
         }else{
+            qp.drawImage(0, 0, white_screen);
             finishGame(&qp, "Game lost","(press escape to restart)");
         }
-
     }
 
 }
@@ -210,15 +135,17 @@ void Ball::keyPressEvent(QKeyEvent *e) {
 
     }
 
-    if ((key == Qt::Key_Up || key == Qt::Key_Space) && booljump != true && boolDontReapeatJump != true) {
+    if ((key == Qt::Key_Up || key == Qt::Key_Space) && booljump != true &&  boolDontReapeatJump != true )  {
 
+        groundPixel = y + 10;
         booljump = true;
-        boolDontReapeatJump = true;
+        //boolDontReapeatJump = true;
     }
 
     if (key == Qt::Key_Escape){
         x = 0;
         y = 500;
+        NumberOfLevel = 0;
         inGame = true;
     }
     QWidget::keyPressEvent(e);
@@ -240,24 +167,42 @@ void Ball::keyReleaseEvent(QKeyEvent *e) {
 
 void Ball::jump(){
 
-    if (booljump && y > groundPixel - 50){
-
+    if (groundPixel - 60 < y && booljump){
         y -= 10;
-
-    }else{
+    }
+    if(groundPixel - 60 >= y && booljump){
+        boolDown = true;
         booljump = false;
-        down();
     }
 
 }
 
 void Ball::down(){
-
-    if(!booljump && y < groundPixel){
-        y += 10;
-    }else{
-        boolDontReapeatJump = false;
+    switch (NumberOfLevel) {
+        case 0:
+            block_down_blue = field.pixel( x, y + 10);
+        break;
+        case 1:
+            block_down_blue = field_1.pixel( x, y + 10);
+        break;
     }
+    QColor clrCurrent_Down_blue(block_down_blue);
+        if (clrCurrent_Down_blue.name() == "#99d9ea"){
+            y += 5;
+            boolDontReapeatJump = true;
+        }else{
+           boolDontReapeatJump = false;
+        }
+}
+
+void Ball::moveObject(){
+    for(int i = 425; i < 1340; ++i){
+        badBlock_x = i;
+    }
+    for(int i = 1340; i > 425; --i){
+        badBlock_x = i;
+    }
+
 }
 
 void Ball::move(){
@@ -272,82 +217,108 @@ void Ball::move(){
 }
 
 void Ball::updateLevel(){
-    NumberOfLevel = 1;
-    x = 0;
-    y = 350;
+    switch (NumberOfLevel) {
+        case 0:
+            if (x >= 1905){
+                NumberOfLevel = 1;
+                x = 20;
+                y = 400;
+            }
+        break;
+        case 1:
+        if (x >= 1905){
+            NumberOfLevel = 2;
+            x = 20;
+            y = 700;
+            badBlock_y = 570;
+        }
+        break;
+        case 2:
+        if (x >= 1905){
+            NumberOfLevel = 3;
+            x = 20;
+            y = 600;
+            inGame = false;
+        }
+        break;
+        }
 }
 
 void Ball::checkCollision(){
+    switch (NumberOfLevel) {
+        case 0:
+            block_down_blue = field.pixel( x, y + 10);
+            block_down_green = field.pixel( x, y + 9);
+            block_right = field.pixel( x + 10, y);
+            block_left = field.pixel( x, y);
+            spike_down = field.pixel( x, y + 10);
+            spike_left = field.pixel( x - 1, y);
+            spike_right = field.pixel( x, y);
+        break;
+        case 1:
+            block_down_blue = field_1.pixel( x, y + 10);
+            block_down_green = field_1.pixel( x, y + 9);
+            block_right = field_1.pixel( x + 10, y);
+            block_left = field_1.pixel( x, y);
+            spike_down = field_1.pixel( x, y + 10);
+            spike_left = field_1.pixel( x - 1, y);
+            spike_right = field_1.pixel( x, y);
+        break;
+        case 2:
+            block_down_blue = field_2.pixel( x, y + 10);
+            block_down_green = field_2.pixel( x, y + 9);
+            block_right = field_2.pixel( x + 10, y);
+            block_left = field_2.pixel( x, y);
+            spike_down = field_2.pixel( x, y + 10);
+            spike_left = field_2.pixel( x - 1, y);
+            spike_right = field_2.pixel( x, y);
+        break;
+    }
 
-    for (int i = 0; i < 114; ++i) {
+    QColor clrCurrent_Down_green(block_down_green);
+    QColor clrCurrent_Right(block_right);
+    QColor clrCurrent_Left(block_left);
+    QColor clrCurrent_Down_blue( block_down_blue);
+    QColor clrCurrent_spike_down(spike_down);
+    QColor clrCurrent_spike_left(spike_left);
+    QColor clrCurrent_spike_right(spike_right);
 
+    if (clrCurrent_Down_green.name() == "#22b14c" && !booljump){
+        y -= 10;
+//        prev_groundPixel = y + 10;
+//        groundPixel = y + 10;
+    }
 
-            if(x >= block_x[i] - 15 && x <= block_x[i] + 25){
-
-                if(x <= block_x[i] ){
-
-                maxRight = block_x[i] - 15;
-
-                if (block_y[i] - 10 >= y ){
-
-                    groundPixel = block_y[i] - 10;
-                    prev_groundPixel = groundPixel - 30;
-                    maxRight = block_x[i];
-                    }
-                }
-
-                if(x >= block_x[i]){
-
-                maxLeft = block_x[i] + 25;
-
-                if (block_y[i] - 10 >= y){
-                    groundPixel = block_y[i] - 10;
-                    prev_groundPixel = groundPixel - 30;
-                    maxLeft = block_x[i];
-                    }
-                }
-            }
-
-            if (x < block_x[i] - 15 || x > block_x[i] + 25){
-                test[i] = true;
-            }else{
-                test[i] = false;
-            }
-
-
-        if (checkBoolArray()){
-            groundPixel = prev_groundPixel;
-        }
-        if (maxLeft == block_x[0]){
-            maxLeft = 0;
-        }
-        if (maxRight == block_x[104]){
-            maxRight = 1905;
-        }
-        if (x >= block_x[102]){
-            updateLevel();
-        }
+    if (!booljump && boolDown){
 
     }
-    for (int i = 0; i < 2; ++i){
-        if (x >= spike_x[i]  && x <= spike_x[i] + 15 && y >= spike_y[i]){
-            groundPixel = spike_y[i] - 10;
-            prev_groundPixel = groundPixel - 30;
-            inGame = false;
-        }
+    if (clrCurrent_Right.name() == "#22b14c"){
+        x -= 5;
     }
+    if (clrCurrent_Left.name() == "#22b14c"){
+        x += 5;
+    }
+    if (clrCurrent_spike_down.name() == "#f46200" || clrCurrent_spike_left.name() == "#f46200" || clrCurrent_spike_right.name() == "#f46200"){
+        inGame = false;
+    }
+
 
 }
 
 void Ball::terminalOut() {
+//    QColor clrCurrent_Down( field_1.pixel( x, y + 10));
+//    QColor clrCurrent_Right( field_1.pixel( x + 10, y));
+//    QColor clrCurrent_Left( field_1.pixel( x - 10, y));
+//    QColor clrCurrent_spike( field_1.pixel( x, y + 10));
+
 
   QTextStream out(stdout);
   out << "x = " << x << endl;
   out << "y = " << y << endl;
   out << "numberOfLevel = " << NumberOfLevel << endl;
-  out << "gameOver = " << gameOverBool << endl;
-  out << "Right = " << maxRight << endl;
-  out << "prev_Ground pixel = " << prev_groundPixel << endl;
+  out << "Down = " << inGame << endl;
+  out << "Down = " << boolDontReapeatJump << endl;
+  out << "MaxRight = " << prev_groundPixel << endl;
 
 }
 
@@ -356,14 +327,16 @@ void Ball::terminalOut() {
 
 
 void Ball::timerEvent(QTimerEvent *e) {
-    //QPainter qp(this);
+    //QPainter hi(this);
     Q_UNUSED(e);
 
     if (inGame) {
-
+       jump();
+       down();
+       updateLevel();
+//       moveObject();
        checkCollision();
        move();
-       jump();
        terminalOut();
 
     }else{
@@ -371,4 +344,5 @@ void Ball::timerEvent(QTimerEvent *e) {
     }
     repaint();
 }
+
 
