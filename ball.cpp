@@ -33,7 +33,7 @@ void Ball::initGame() {
     NumberOfLevel = 0;
 
 
-    x = 20;
+    x = 1920;
     y = 500;
 
 
@@ -92,7 +92,7 @@ void Ball::doDrawing() {
     } else {
         if (NumberOfLevel == 3){
             qp.drawImage(0, 0, white_screen);
-            finishGame(&qp, "You have won","Thank yoy for playing in beta test");
+            finishGame(&qp, "You have won","Thank you for playing in beta test");
         }else{
             qp.drawImage(0, 0, white_screen);
             finishGame(&qp, "Game lost","(press escape to restart)");
@@ -221,7 +221,7 @@ void Ball::updateLevel(){
         case 0:
             if (x >= 1905){
                 NumberOfLevel = 1;
-                x = 20;
+                x = 1920;
                 y = 400;
             }
         break;
@@ -253,7 +253,7 @@ void Ball::checkCollision(){
             block_left = field.pixel( x, y);
             spike_down = field.pixel( x, y + 10);
             spike_left = field.pixel( x - 1, y);
-            spike_right = field.pixel( x, y);
+            spike_right = field.pixel( x + 4, y);
         break;
         case 1:
             block_down_blue = field_1.pixel( x, y + 10);
@@ -262,7 +262,7 @@ void Ball::checkCollision(){
             block_left = field_1.pixel( x, y);
             spike_down = field_1.pixel( x, y + 10);
             spike_left = field_1.pixel( x - 1, y);
-            spike_right = field_1.pixel( x, y);
+            spike_right = field_1.pixel( x + 4, y);
         break;
         case 2:
             block_down_blue = field_2.pixel( x, y + 10);
@@ -271,7 +271,7 @@ void Ball::checkCollision(){
             block_left = field_2.pixel( x, y);
             spike_down = field_2.pixel( x, y + 10);
             spike_left = field_2.pixel( x - 1, y);
-            spike_right = field_2.pixel( x, y);
+            spike_right = field_2.pixel( x + 4, y);
         break;
     }
 
