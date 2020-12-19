@@ -33,7 +33,7 @@ void Ball::initGame() {
     NumberOfLevel = 0;
 
 
-    x = 1920;
+    x = 20;
     y = 500;
 
 
@@ -221,7 +221,7 @@ void Ball::updateLevel(){
         case 0:
             if (x >= 1905){
                 NumberOfLevel = 1;
-                x = 1920;
+                x = 20;
                 y = 400;
             }
         break;
@@ -253,7 +253,7 @@ void Ball::checkCollision(){
             block_left = field.pixel( x, y);
             spike_down = field.pixel( x, y + 10);
             spike_left = field.pixel( x - 1, y);
-            spike_right = field.pixel( x + 4, y);
+            spike_right = field.pixel( x + 3, y);
         break;
         case 1:
             block_down_blue = field_1.pixel( x, y + 10);
@@ -262,7 +262,7 @@ void Ball::checkCollision(){
             block_left = field_1.pixel( x, y);
             spike_down = field_1.pixel( x, y + 10);
             spike_left = field_1.pixel( x - 1, y);
-            spike_right = field_1.pixel( x + 4, y);
+            spike_right = field_1.pixel( x + 3, y);
         break;
         case 2:
             block_down_blue = field_2.pixel( x, y + 10);
@@ -271,7 +271,7 @@ void Ball::checkCollision(){
             block_left = field_2.pixel( x, y);
             spike_down = field_2.pixel( x, y + 10);
             spike_left = field_2.pixel( x - 1, y);
-            spike_right = field_2.pixel( x + 4, y);
+            spike_right = field_2.pixel( x + 3, y);
         break;
     }
 
