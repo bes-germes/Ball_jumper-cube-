@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pictures/apple.png</file>
+        <file>pictures/block1.png</file>
+        <file>pictures/dot.png</file>
+        <file>pictures/field.png</file>
+        <file>pictures/field_1.png</file>
+        <file>pictures/head.png</file>
+        <file>pictures/spike.png</file>
+        <file>pictures/цуыацупы.jpg</file>
+        <file>pictures/white_screen.png</file>
+        <file>pictures/field_test.png</file>
+        <file>pictures/field_2.png</file>
+    </qresource>
+</RCC>
